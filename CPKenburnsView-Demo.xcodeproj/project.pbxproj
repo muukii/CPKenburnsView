@@ -89,7 +89,7 @@
 		4B48897E18ED485E008F0635 = {
 			isa = PBXGroup;
 			children = (
-				4B4889BF18ED4866008F0635 /* CPKenbunrsView */,
+				4B4889BF18ED4866008F0635 /* CPKenburnsView */,
 				4B48899018ED485E008F0635 /* CPKenburnsView-Demo */,
 				4B4889AF18ED485E008F0635 /* CPKenburnsView-DemoTests */,
 				4B48898918ED485E008F0635 /* Frameworks */,
@@ -161,13 +161,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4B4889BF18ED4866008F0635 /* CPKenbunrsView */ = {
+		4B4889BF18ED4866008F0635 /* CPKenburnsView */ = {
 			isa = PBXGroup;
 			children = (
 				4B4889C018ED488D008F0635 /* CPKenburnsView.h */,
 				4B4889C118ED488D008F0635 /* CPKenburnsView.m */,
 			);
-			path = CPKenbunrsView;
+			path = CPKenburnsView;
 			sourceTree = "<group>";
 		};
 		4B4889C318ED48A7008F0635 /* Images */ = {
@@ -487,6 +487,7 @@
 				4B4889BB18ED485E008F0635 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4B4889BC18ED485E008F0635 /* Build configuration list for PBXNativeTarget "CPKenburnsView-DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -495,6 +496,7 @@
 				4B4889BE18ED485E008F0635 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

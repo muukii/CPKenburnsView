@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.source       = { :git => "https://github.com/muukii0803/CPKenburnsImageView.git", :tag => "0.0.1" }
 
-  s.source_files  = 'CPKenburnsView/**/*.{h,m}'
+  s.source_files  = 'CPKenburnsView', 'CPKenburnsView/*.{h,m}'
   # s.resource  = "icon.png"
   # s.resources = "Resources/*.png"
 
