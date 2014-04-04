@@ -38,7 +38,11 @@
 
 @interface CPKenburnsView ()
 @property (nonatomic, strong) CPKenburnsImageView * imageView;
+@property (nonatomic, assign) CGRect initRect;
+@property (nonatomic, assign) CGAffineTransform startTransform;
 @property (nonatomic, assign) CGRect moveRect;
+@property (nonatomic, assign) CGAffineTransform endTransform;
+@property (nonatomic, assign) CGRect restartRect;
 @end
 @implementation CPKenburnsView
 {
@@ -57,10 +61,22 @@
 - (void)configureView
 {
     self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.autoresizesSubviews = YES;
+    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:self.imageView];
     self.clipsToBounds = YES;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    self.restartRect = [self.imageView.layer.presentationLayer frame];
+    NSLog(@"%@",NSStringFromCGRect(self.restartRect));
+    [super setFrame:frame];
+//    [self initImageViewSize:self.imageView.image];
+//    [self resetTransforms];
+//    self.imageView.frame = self.initRect;
+//    [self motion];
 }
 
 - (void)configureAnimation
@@ -70,31 +86,51 @@
 
 - (void)configureTransforms
 {
+    CPKenburnsImageViewZoomCourse cource = self.course ? self.course : (CPKenburnsImageViewZoomCourse)arc4random()%4 + 1;
+    self.course = cource;
+    [self setZoomRects:cource];
+    self.restartRect = self.initRect;
+    self.imageView.frame = self.initRect;
+}
 
-    CGRect initRect;
-    switch (arc4random()%4) {
-        case 0:
-            initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
+- (void)resetTransforms
+{
+    [self setZoomRects:self.course];
+}
+
+- (void)setZoomRects:(CPKenburnsImageViewZoomCourse)cource
+{
+    switch (cource) {
+        case CPKenburnsImageViewZoomCourseUpperLeftToLowerRight:
+            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
             self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
             break;
-        case 1:
-            initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
+        case CPKenburnsImageViewZoomCourseUpperRightToLowerLeft:
+            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
             self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
             break;
-        case 2:
-            initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
-            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
-            break;
-        case 3:
-            initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
+        case CPKenburnsImageViewZoomCourseLowerLeftToUpperRight:
+            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
             self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
             break;
+        case CPKenburnsImageViewZoomCourseLowerRightToUpperLeft:
+            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
+            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
+            break;
+        case CPKenburnsImageViewZoomCourseRandom:
+            [self configureTransforms];
+            break;
     }
-
-    self.imageView.frame = initRect;
 }
 
 - (void)setImage:(UIImage *)image
+{
+    [self initImageViewSize:image];
+    [self configureTransforms];
+    [self motion];
+}
+
+- (void)initImageViewSize:(UIImage *)image
 {
     const CGSize imageSize = image.size;
     const CGFloat width = CGRectGetWidth(self.bounds);
@@ -102,28 +138,27 @@
 
     CGFloat power;
     CGSize resizedImageSize;
+    const CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
         //写真のサイズに合わせる
     if (imageSize.width > imageSize.height) {
             //横長
-        power = height / imageSize.height;
-        resizedImageSize = CGSizeMake(imageSize.width * power, height);
+        power = selfLongSize / imageSize.height;
+        resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     } else if (imageSize.width == imageSize.height) {
             //正方形
         power = height / imageSize.height;
         resizedImageSize = CGSizeMake(width, height);
     } else {
             //縦長
-        power = width / imageSize.width;
-        resizedImageSize = CGSizeMake(width, imageSize.height * power);
+        power = selfLongSize / imageSize.width;
+        resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
     CGRect imageViewRect = self.imageView.bounds;
     imageViewRect.size = resizedImageSize;
     self.imageView.bounds = imageViewRect;
     self.imageView.image = image;
     initImageViewSize = resizedImageSize;
-    [self configureTransforms];
-    [self motion];
 }
 
 - (void)restartMotion
@@ -134,20 +169,10 @@
 - (void)motion
 {
     [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
-        self.imageView.frame = self.moveRect;
+        self.imageView.transform = translatedAndScaledTransformUsingViewRect(self.moveRect,self.imageView.frame);
     } completion:^(BOOL finished) {
     }];
 }
-
-- (CGAffineTransform)affineTransform:(CGRect)rect
-{
-    CGAffineTransform transform;
-    CGRect fromRect = self.imageView.bounds;
-    transform = CGAffineTransformFromRectToRect2(fromRect,rect);
-    transform = CGAffineTransformInvert(transform);
-    return transform;
-}
-
 
 - (CGRect)zoomRect:(CPKenburnsImageViewZoomPoint)zoomPoint zoomRate:(CGFloat)zoomRate
 {
@@ -180,13 +205,19 @@
     return zoomRect;
 }
 
-CGAffineTransform CGAffineTransformFromRectToRect2(CGRect fromRect, CGRect toRect)
+CGAffineTransform
+translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 {
-    CGAffineTransform trans1 = CGAffineTransformMakeTranslation(toRect.origin.x,toRect.origin.y);
-    CGAffineTransform scale = CGAffineTransformMakeScale(toRect.size.width/fromRect.size.width, toRect.size.height/fromRect.size.height);
-    CGAffineTransform trans2 = CGAffineTransformMakeTranslation(toRect.origin.x, toRect.origin.y);
-    return CGAffineTransformConcat(trans1, scale);
-    return CGAffineTransformConcat(CGAffineTransformConcat(trans1, scale), trans2);
+    CGSize scales = CGSizeMake(viewRect.size.width/fromRect.size.width, viewRect.size.height/fromRect.size.height);
+    CGPoint offset = CGPointMake(CGRectGetMidX(viewRect) - CGRectGetMidX(fromRect), CGRectGetMidY(viewRect) - CGRectGetMidY(fromRect));
+    return CGAffineTransformMake(scales.width, 0, 0, scales.height, offset.x, offset.y);
+}
+
+CGAffineTransform
+scaleFromSizeToSize(CGSize fromSize,CGSize toSize)
+{
+    CGSize scales = CGSizeMake(toSize.width/fromSize.width, toSize.height/fromSize.height);
+    return CGAffineTransformMakeScale(scales.width,scales.height);
 }
 
 @end

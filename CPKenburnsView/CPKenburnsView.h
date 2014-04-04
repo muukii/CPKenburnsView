@@ -23,16 +23,24 @@
 //THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomCourse) {
+    CPKenburnsImageViewZoomCourseRandom                = 0,
+    CPKenburnsImageViewZoomCourseUpperLeftToLowerRight = 1,
+    CPKenburnsImageViewZoomCourseUpperRightToLowerLeft = 2,
+    CPKenburnsImageViewZoomCourseLowerLeftToUpperRight = 3,
+    CPKenburnsImageViewZoomCourseLowerRightToUpperLeft = 4
+};
 typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
-    CPKenburnsImageViewZoomPointLowerLeft,
-    CPKenburnsImageViewZoomPointLowerRight,
-    CPKenburnsImageViewZoomPointUpperLeft,
-    CPKenburnsImageViewZoomPointUpperRight,
+    CPKenburnsImageViewZoomPointLowerLeft  = 0,
+    CPKenburnsImageViewZoomPointLowerRight = 1,
+    CPKenburnsImageViewZoomPointUpperLeft  = 2,
+    CPKenburnsImageViewZoomPointUpperRight = 3
 };
 
 @interface CPKenburnsView : UIView
 @property (nonatomic, copy) UIImage * image;
 @property (nonatomic, assign) CGFloat animationDuration;  //default is 13.f
+@property (nonatomic, assign) CPKenburnsImageViewZoomCourse course; // default is 0
 
 - (void)motion;
 - (void)restartMotion;
