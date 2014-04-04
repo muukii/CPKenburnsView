@@ -26,7 +26,6 @@
 		4B4889C718ED4976008F0635 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B4889C518ED4976008F0635 /* 2.png */; };
 		4B9FAF3318EE9E6800007302 /* CPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9FAF3218EE9E6800007302 /* CPTableViewController.m */; };
 		4B9FAF3618EEA2EA00007302 /* CPGrowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9FAF3518EEA2EA00007302 /* CPGrowingViewController.m */; };
-		9282349C1163492F9BEBE839 /* libPods-CPKenburnsView-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6FCFBAC51E498E808B97B5 /* libPods-CPKenburnsView-Demo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,7 +77,6 @@
 				4B48898D18ED485E008F0635 /* CoreGraphics.framework in Frameworks */,
 				4B48898F18ED485E008F0635 /* UIKit.framework in Frameworks */,
 				4B48898B18ED485E008F0635 /* Foundation.framework in Frameworks */,
-				9282349C1163492F9BEBE839 /* libPods-CPKenburnsView-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,11 +198,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4B4889B918ED485E008F0635 /* Build configuration list for PBXNativeTarget "CPKenburnsView-Demo" */;
 			buildPhases = (
-				CFFC21DE43D74884AE9D728D /* Check Pods Manifest.lock */,
 				4B48898318ED485E008F0635 /* Sources */,
 				4B48898418ED485E008F0635 /* Frameworks */,
 				4B48898518ED485E008F0635 /* Resources */,
-				6A3086DFD95A4DD1BDB088DB /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -289,39 +285,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		6A3086DFD95A4DD1BDB088DB /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-CPKenburnsView-Demo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CFFC21DE43D74884AE9D728D /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4B48898318ED485E008F0635 /* Sources */ = {
