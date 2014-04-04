@@ -70,13 +70,7 @@
 
 - (void)setFrame:(CGRect)frame
 {
-    self.restartRect = [self.imageView.layer.presentationLayer frame];
-    NSLog(@"%@",NSStringFromCGRect(self.restartRect));
     [super setFrame:frame];
-//    [self initImageViewSize:self.imageView.image];
-//    [self resetTransforms];
-//    self.imageView.frame = self.initRect;
-//    [self motion];
 }
 
 - (void)configureAnimation
