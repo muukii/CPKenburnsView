@@ -42,6 +42,5 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 @property (nonatomic, assign) CGFloat animationDuration;  //default is 13.f
 @property (nonatomic, assign) CPKenburnsImageViewZoomCourse course; // default is 0
 
-- (void)motion;
 - (void)restartMotion;
 @end
