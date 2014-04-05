@@ -38,11 +38,10 @@
 
 @interface CPKenburnsView ()
 @property (nonatomic, strong) CPKenburnsImageView * imageView;
-@property (nonatomic, assign) CGRect initRect;
+@property (nonatomic, assign) CGRect startRect;
 @property (nonatomic, assign) CGAffineTransform startTransform;
-@property (nonatomic, assign) CGRect moveRect;
+@property (nonatomic, assign) CGRect endRect;
 @property (nonatomic, assign) CGAffineTransform endTransform;
-@property (nonatomic, assign) CGRect restartRect;
 @end
 @implementation CPKenburnsView
 {
@@ -83,8 +82,6 @@
     CPKenburnsImageViewZoomCourse cource = self.course ? self.course : (CPKenburnsImageViewZoomCourse)arc4random()%4 + 1;
     self.course = cource;
     [self setZoomRects:cource];
-    self.restartRect = self.initRect;
-    self.imageView.frame = self.initRect;
 }
 
 - (void)resetTransforms
@@ -96,25 +93,27 @@
 {
     switch (cource) {
         case CPKenburnsImageViewZoomCourseUpperLeftToLowerRight:
-            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
-            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
+            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
+            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
             break;
         case CPKenburnsImageViewZoomCourseUpperRightToLowerLeft:
-            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
-            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
+            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
+            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
             break;
         case CPKenburnsImageViewZoomCourseLowerLeftToUpperRight:
-            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
-            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
+            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
+            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
             break;
         case CPKenburnsImageViewZoomCourseLowerRightToUpperLeft:
-            self.initRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
-            self.moveRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
+            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
+            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
             break;
         case CPKenburnsImageViewZoomCourseRandom:
             [self configureTransforms];
             break;
     }
+    self.startTransform = translatedAndScaledTransformUsingViewRect(self.startRect, self.imageView.frame);
+    self.endTransform = translatedAndScaledTransformUsingViewRect(self.endRect, self.imageView.frame);
 }
 
 - (void)setImage:(UIImage *)image
@@ -163,7 +162,8 @@
 - (void)motion
 {
     [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
-        self.imageView.transform = translatedAndScaledTransformUsingViewRect(self.moveRect,self.imageView.frame);
+        self.imageView.transform = self.startTransform;
+        self.imageView.transform = self.endTransform;
     } completion:^(BOOL finished) {
     }];
 }
