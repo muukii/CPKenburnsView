@@ -1,26 +1,26 @@
-//
-//CPKenburnsImageView.m
-//
-//The MIT License (MIT)
-//Copyright © 2014 Muukii (www.muukii.me)
-//
-//Permission is hereby granted, free of charge, to any person obtaining a copy
-//of this software and associated documentation files (the “Software”), to deal
-//in the Software without restriction, including without limitation the rights
-//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//copies of the Software, and to permit persons to whom the Software is
-//furnished to do so, subject to the following conditions:
-//
-//The above copyright notice and this permission notice shall be included in
-//all copies or substantial portions of the Software.
-//
-//THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//THE SOFTWARE.
+    //
+    //CPKenburnsImageView.m
+    //
+    //The MIT License (MIT)
+    //Copyright © 2014 Muukii (www.muukii.me)
+    //
+    //Permission is hereby granted, free of charge, to any person obtaining a copy
+    //of this software and associated documentation files (the “Software”), to deal
+    //in the Software without restriction, including without limitation the rights
+    //to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    //copies of the Software, and to permit persons to whom the Software is
+    //furnished to do so, subject to the following conditions:
+    //
+    //The above copyright notice and this permission notice shall be included in
+    //all copies or substantial portions of the Software.
+    //
+    //THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    //IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    //FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    //AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    //THE SOFTWARE.
 
 #import "CPKenburnsView.h"
 @interface CPKenburnsImageView : UIImageView
@@ -38,10 +38,8 @@
 
 @interface CPKenburnsView ()
 @property (nonatomic, strong) CPKenburnsImageView * imageView;
-@property (nonatomic, assign) CGRect startRect;
-@property (nonatomic, assign) CGAffineTransform startTransform;
-@property (nonatomic, assign) CGRect endRect;
-@property (nonatomic, assign) CGAffineTransform endTransform;
+@property (nonatomic) CGAffineTransform startTransform;
+@property (nonatomic) CGAffineTransform endTransform;
 @end
 @implementation CPKenburnsView
 {
@@ -59,12 +57,15 @@
 
 - (void)configureView
 {
+    [self.imageView removeFromSuperview];
     self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
+    self.startTransform = CGAffineTransformIdentity;
+    self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
     self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:self.imageView];
     self.clipsToBounds = YES;
+    [self addSubview:self.imageView];
 }
 
 - (void)setFrame:(CGRect)frame
@@ -79,7 +80,7 @@
 
 - (void)configureTransforms
 {
-    CPKenburnsImageViewZoomCourse cource = self.course ? self.course : (CPKenburnsImageViewZoomCourse)arc4random()%4 + 1;
+    CPKenburnsImageViewZoomCourse cource = self.course != 0 ? self.course : (CPKenburnsImageViewZoomCourse)arc4random()%4 + 1;
     self.course = cource;
     [self setZoomRects:cource];
 }
@@ -91,33 +92,43 @@
 
 - (void)setZoomRects:(CPKenburnsImageViewZoomCourse)cource
 {
+    CGRect startRect;
+    CGRect endRect;
     switch (cource) {
         case CPKenburnsImageViewZoomCourseUpperLeftToLowerRight:
-            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
-            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
             break;
         case CPKenburnsImageViewZoomCourseUpperRightToLowerLeft:
-            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
-            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
             break;
         case CPKenburnsImageViewZoomCourseLowerLeftToUpperRight:
-            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
-            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
             break;
         case CPKenburnsImageViewZoomCourseLowerRightToUpperLeft:
-            self.startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
-            self.endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
             break;
         case CPKenburnsImageViewZoomCourseRandom:
-            [self configureTransforms];
-            break;
+            NSAssert(@"Random is not support", nil);
+            return;
     }
-    self.startTransform = translatedAndScaledTransformUsingViewRect(self.startRect, self.imageView.frame);
-    self.endTransform = translatedAndScaledTransformUsingViewRect(self.endRect, self.imageView.frame);
+    self.startTransform = translatedAndScaledTransformUsingViewRect(startRect, self.imageView.frame);
+    if (startRect.size.width == 0) {
+        NSAssert(@"Move Rect is Null", nil);
+    }
+    self.endTransform = translatedAndScaledTransformUsingViewRect(endRect, self.imageView.frame);
 }
 
 - (void)setImage:(UIImage *)image
 {
+    _image = image;
+    if (image == nil) {
+        self.imageView.image = nil;
+        return;
+    }
     [self initImageViewSize:image];
     [self configureTransforms];
     [self motion];
@@ -125,13 +136,13 @@
 
 - (void)initImageViewSize:(UIImage *)image
 {
-    const CGSize imageSize = image.size;
-    const CGFloat width = CGRectGetWidth(self.bounds);
-    const CGFloat height = CGRectGetHeight(self.bounds);
+    CGSize imageSize = image.size;
+    CGFloat width = CGRectGetWidth(self.bounds);
+    CGFloat height = CGRectGetHeight(self.bounds);
 
     CGFloat power;
     CGSize resizedImageSize;
-    const CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
+    CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
         //写真のサイズに合わせる
     if (imageSize.width > imageSize.height) {
@@ -140,13 +151,13 @@
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     } else if (imageSize.width == imageSize.height) {
             //正方形
-        power = height / imageSize.height;
         resizedImageSize = CGSizeMake(width, height);
     } else {
             //縦長
         power = selfLongSize / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
+    self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
     imageViewRect.size = resizedImageSize;
     self.imageView.bounds = imageViewRect;
@@ -156,6 +167,7 @@
 
 - (void)restartMotion
 {
+    [self initImageViewSize:self.image];
     [self configureTransforms];
     [self motion];
 }
