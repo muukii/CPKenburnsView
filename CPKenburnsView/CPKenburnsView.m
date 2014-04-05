@@ -49,6 +49,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self initParams];
         [self configureView];
         [self configureAnimation];
     }
@@ -66,6 +67,12 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     [self addSubview:self.imageView];
+}
+
+- (void)initParams
+{
+    self.minZoomRate = 1.2;
+    self.maxZoomRate = 1.4;
 }
 
 - (void)setFrame:(CGRect)frame
@@ -96,20 +103,20 @@
     CGRect endRect;
     switch (cource) {
         case CPKenburnsImageViewZoomCourseUpperLeftToLowerRight:
-            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.3];
-            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.1];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:adjustZoomRate(self.minZoomRate, self.zoomRatio)];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:adjustZoomRate(self.maxZoomRate, self.zoomRatio)];
             break;
         case CPKenburnsImageViewZoomCourseUpperRightToLowerLeft:
-            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.35];
-            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.12];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:adjustZoomRate(self.minZoomRate, self.zoomRatio)];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:adjustZoomRate(self.maxZoomRate, self.zoomRatio)];
             break;
         case CPKenburnsImageViewZoomCourseLowerLeftToUpperRight:
-            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:1.2];
-            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:1.3];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerLeft zoomRate:adjustZoomRate(self.minZoomRate, self.zoomRatio)];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperRight zoomRate:adjustZoomRate(self.maxZoomRate, self.zoomRatio)];
             break;
         case CPKenburnsImageViewZoomCourseLowerRightToUpperLeft:
-            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:1.23];
-            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:1.1];
+            startRect = [self zoomRect:CPKenburnsImageViewZoomPointLowerRight zoomRate:adjustZoomRate(self.minZoomRate, self.zoomRatio)];
+            endRect = [self zoomRect:CPKenburnsImageViewZoomPointUpperLeft zoomRate:adjustZoomRate(self.maxZoomRate, self.zoomRatio)];
             break;
         case CPKenburnsImageViewZoomCourseRandom:
             NSAssert(@"Random is not support", nil);
@@ -209,6 +216,12 @@
     zoomRect.size = zoomSize;
     zoomRect.origin = point;
     return zoomRect;
+}
+
+CGFloat
+adjustZoomRate(CGFloat zoomRate,CGFloat ratio)
+{
+    return zoomRate;
 }
 
 CGAffineTransform
