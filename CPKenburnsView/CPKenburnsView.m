@@ -1,26 +1,26 @@
-    //
-    //CPKenburnsImageView.m
-    //
-    //The MIT License (MIT)
-    //Copyright © 2014 Muukii (www.muukii.me)
-    //
-    //Permission is hereby granted, free of charge, to any person obtaining a copy
-    //of this software and associated documentation files (the “Software”), to deal
-    //in the Software without restriction, including without limitation the rights
-    //to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    //copies of the Software, and to permit persons to whom the Software is
-    //furnished to do so, subject to the following conditions:
-    //
-    //The above copyright notice and this permission notice shall be included in
-    //all copies or substantial portions of the Software.
-    //
-    //THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    //IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    //FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    //AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    //THE SOFTWARE.
+//
+//CPKenburnsImageView.m
+//
+//The MIT License (MIT)
+//Copyright © 2014 Muukii (www.muukii.me)
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the “Software”), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
 
 #import "CPKenburnsView.h"
 @interface CPKenburnsImageView : UIImageView
@@ -43,7 +43,7 @@
 @end
 @implementation CPKenburnsView
 {
-    CGSize initImageViewSize;
+    CGRect initImageViewFrame;
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -87,9 +87,9 @@
 
 - (void)configureTransforms
 {
-    CPKenburnsImageViewZoomCourse cource = self.course != 0 ? self.course : (CPKenburnsImageViewZoomCourse)arc4random()%4 + 1;
-    self.course = cource;
-    [self setZoomRects:cource];
+    self.course = self.course == CPKenburnsImageViewZoomCourseRandom ? ((CPKenburnsImageViewZoomCourse)arc4random_uniform(4)) + 1 : self.course;
+    NSLog(@"%d",self.course);
+    [self setZoomRects:self.course];
 }
 
 - (void)resetTransforms
@@ -122,11 +122,8 @@
             NSAssert(@"Random is not support", nil);
             return;
     }
-    self.startTransform = translatedAndScaledTransformUsingViewRect(startRect, self.imageView.frame);
-    if (startRect.size.width == 0) {
-        NSAssert(@"Move Rect is Null", nil);
-    }
-    self.endTransform = translatedAndScaledTransformUsingViewRect(endRect, self.imageView.frame);
+    self.startTransform = translatedAndScaledTransformUsingViewRect(startRect, initImageViewFrame);
+    self.endTransform = translatedAndScaledTransformUsingViewRect(endRect, initImageViewFrame);
 }
 
 - (void)setImage:(UIImage *)image
@@ -134,6 +131,7 @@
     _image = image;
     if (image == nil) {
         self.imageView.image = nil;
+        self.imageView.frame = self.bounds;
         return;
     }
     [self initImageViewSize:image];
@@ -166,10 +164,11 @@
     }
     self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
+    NSLog(@"%@",NSStringFromCGRect(imageViewRect));
     imageViewRect.size = resizedImageSize;
-    self.imageView.bounds = imageViewRect;
+    self.imageView.frame = imageViewRect;
     self.imageView.image = image;
-    initImageViewSize = resizedImageSize;
+    initImageViewFrame = self.imageView.frame;
 }
 
 - (void)restartMotion
@@ -180,6 +179,7 @@
 }
 - (void)motion
 {
+    NSLog(@"%@ \n%@",NSStringFromCGAffineTransform(self.startTransform),NSStringFromCGAffineTransform(self.endTransform));
     [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
         self.imageView.transform = self.startTransform;
         self.imageView.transform = self.endTransform;
@@ -189,7 +189,7 @@
 
 - (CGRect)zoomRect:(CPKenburnsImageViewZoomPoint)zoomPoint zoomRate:(CGFloat)zoomRate
 {
-    CGSize imageSize = initImageViewSize;
+    CGSize imageSize = initImageViewFrame.size;
     CGSize zoomSize;
     CGPoint point;
 
@@ -215,6 +215,7 @@
     CGRect zoomRect;
     zoomRect.size = zoomSize;
     zoomRect.origin = point;
+    NSLog(@"zoom Rect %@",NSStringFromCGRect(zoomRect));
     return zoomRect;
 }
 
@@ -230,13 +231,6 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     CGSize scales = CGSizeMake(viewRect.size.width/fromRect.size.width, viewRect.size.height/fromRect.size.height);
     CGPoint offset = CGPointMake(CGRectGetMidX(viewRect) - CGRectGetMidX(fromRect), CGRectGetMidY(viewRect) - CGRectGetMidY(fromRect));
     return CGAffineTransformMake(scales.width, 0, 0, scales.height, offset.x, offset.y);
-}
-
-CGAffineTransform
-scaleFromSizeToSize(CGSize fromSize,CGSize toSize)
-{
-    CGSize scales = CGSizeMake(toSize.width/fromSize.width, toSize.height/fromSize.height);
-    return CGAffineTransformMakeScale(scales.width,scales.height);
 }
 
 @end
