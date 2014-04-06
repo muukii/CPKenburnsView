@@ -9,6 +9,7 @@ pod 'CPKenbunrsView', '~> 0.6.0'
 #### Screen shots
 ![screenshot1](screenshot1.png)
 ![screenshot1](screenshot2.png)
+#### [SampleMovie](http://cl.ly/1g2D2v1K0O2M)
 
 
 ### How to use

@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     kenbunrsView = [[CPKenburnsView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
-    kenbunrsView.image = [UIImage imageNamed:@"2.png"];
+    kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
     [self.view addSubview:kenbunrsView];
 
     // Do any additional setup after loading the view.
