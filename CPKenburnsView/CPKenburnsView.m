@@ -88,7 +88,6 @@
 - (void)configureTransforms
 {
     self.course = self.course == CPKenburnsImageViewZoomCourseRandom ? ((CPKenburnsImageViewZoomCourse)arc4random_uniform(4)) + 1 : self.course;
-    NSLog(@"%d",self.course);
     [self setZoomRects:self.course];
 }
 
@@ -179,7 +178,6 @@
 }
 - (void)motion
 {
-    NSLog(@"%@ \n%@",NSStringFromCGAffineTransform(self.startTransform),NSStringFromCGAffineTransform(self.endTransform));
     [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
         self.imageView.transform = self.startTransform;
         self.imageView.transform = self.endTransform;
@@ -215,7 +213,6 @@
     CGRect zoomRect;
     zoomRect.size = zoomSize;
     zoomRect.origin = point;
-    NSLog(@"zoom Rect %@",NSStringFromCGRect(zoomRect));
     return zoomRect;
 }
 
