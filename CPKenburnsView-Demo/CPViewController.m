@@ -22,7 +22,6 @@
     kenbunrsView = [[CPKenburnsView alloc] initWithFrame:self.view.bounds];
     kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
     [self.view addSubview:kenbunrsView];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning
