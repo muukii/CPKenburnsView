@@ -3,7 +3,7 @@ CPKenburnsImageView
 ### Ken Bunrs Effect
 
 ```
-pod 'CPKenbunrsView', '~> 0.6.0'
+pod 'CPKenbunrsView', '~> 0.7.0'
 ```
 
 #### Screen shots
