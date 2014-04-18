@@ -2,6 +2,9 @@ CPKenburnsImageView
 ===================
 ### Ken Burns Effect
 
+inspired by Heyday 
+[CPKenburnsSlideshowView](https://github.com/muukii0803/CPKenburnsSlideshowView)
+
 ```
 pod 'CPKenburnsView', '~> 0.7.0'
 ```
