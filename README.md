@@ -1,15 +1,18 @@
 CPKenburnsImageView
 ===================
-### Ken Bunrs Effect
+### Ken Burns Effect
+
+inspired by Heyday 
+[CPKenburnsSlideshowView](https://github.com/muukii0803/CPKenburnsSlideshowView)
 
 ```
-pod 'CPKenbunrsView', '~> 0.6.0'
+pod 'CPKenburnsView', '~> 0.7.0'
 ```
+#### [SampleMovie](http://f.cl.ly/items/3R0n3x291924413z1Y44/sampleMovie.mp4)
 
 #### Screen shots
 ![screenshot1](screenshot1.png)
 ![screenshot1](screenshot2.png)
-#### [SampleMovie](http://f.cl.ly/items/3R0n3x291924413z1Y44/sampleMovie.mp4)
 
 
 ### How to use
