@@ -140,6 +140,10 @@
 
 - (void)initImageViewSize:(UIImage *)image
 {
+    if (!image) {
+        return;
+    }
+
     CGSize imageSize = image.size;
     CGFloat width = CGRectGetWidth(self.bounds);
     CGFloat height = CGRectGetHeight(self.bounds);
