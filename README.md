@@ -6,7 +6,7 @@ inspired by Heyday
 [CPKenburnsSlideshowView](https://github.com/muukii0803/CPKenburnsSlideshowView)
 
 ```
-pod 'CPKenburnsView', '~> 0.7.0'
+pod 'CPKenburnsView', '~> 0.8.0'
 ```
 #### [SampleMovie](http://f.cl.ly/items/3R0n3x291924413z1Y44/sampleMovie.mp4)
 
