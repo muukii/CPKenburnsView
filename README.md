@@ -3,8 +3,12 @@ CPKenburnsImageView
 ### Ken Burns Effect
 
 inspired by Heyday 
+
+## Enable slideshow!
+
 [CPKenburnsSlideshowView](https://github.com/muukii0803/CPKenburnsSlideshowView)
 
+---- 
 ```
 pod 'CPKenburnsView', '~> 0.8.0'
 ```
