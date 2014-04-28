@@ -73,6 +73,7 @@
 {
     self.startZoomRate = 1.2;
     self.endZoomRate = 1.4;
+    self.padding = UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
 - (void)setFrame:(CGRect)frame
@@ -138,6 +139,21 @@
     [self motion];
 }
 
+- (void)setStartZoomRate:(CGFloat)startZoomRate
+{
+    _startZoomRate = startZoomRate;
+}
+
+- (void)setEndZoomRate:(CGFloat)endZoomRate
+{
+    _endZoomRate = endZoomRate;
+}
+
+- (void)setPadding:(UIEdgeInsets)padding
+{
+    _padding = padding;
+}
+
 - (void)initImageViewSize:(UIImage *)image
 {
     if (!image) {
@@ -153,12 +169,19 @@
     CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
         //写真のサイズに合わせる
-    if (imageSize.width == imageSize.height) {
+    if (imageSize.width > imageSize.height) {
+        //横長
+        power = selfLongSize / imageSize.height;
+        resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
+    } else if (imageSize.width == imageSize.height) {
+        //正方形
         resizedImageSize = CGSizeMake(width, height);
     } else {
+        //縦長
         power = selfLongSize / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
+
 
     self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
@@ -188,7 +211,6 @@
     CGSize imageSize = initImageViewFrame.size;
     CGSize zoomSize;
     CGPoint point;
-
     zoomSize = CGSizeMake(imageSize.width*zoomRate,imageSize.height*zoomRate);
 
     CGFloat y = -(fabs(zoomSize.height - CGRectGetHeight(self.bounds)));
@@ -211,6 +233,15 @@
     CGRect zoomRect;
     zoomRect.size = zoomSize;
     zoomRect.origin = point;
+
+    UIEdgeInsets padding;
+
+    padding.bottom = -self.padding.bottom;
+    padding.left = -self.padding.left;
+    padding.top = -self.padding.top;
+    padding.right = -self.padding.right;
+
+    zoomRect = UIEdgeInsetsInsetRect(zoomRect, padding);
     return zoomRect;
 }
 
