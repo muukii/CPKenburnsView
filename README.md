@@ -11,7 +11,7 @@ Rename Property minZoomRate->startZoomRate maxZoomRate->endZoomRate
 
 ---- 
 ```
-pod 'CPKenburnsView', '~> 0.8.0'
+pod 'CPKenburnsView'
 ```
 #### [SampleMovie](http://f.cl.ly/items/3R0n3x291924413z1Y44/sampleMovie.mp4)
 
