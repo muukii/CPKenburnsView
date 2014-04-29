@@ -6,7 +6,6 @@ inspired by Heyday
 
 ## Enable slideshow!
 
-Rename Property minZoomRate->startZoomRate maxZoomRate->endZoomRate
 [CPKenburnsSlideshowView](https://github.com/muukii0803/CPKenburnsSlideshowView)
 
 ---- 
