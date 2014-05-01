@@ -130,9 +130,17 @@
 {
     _image = image;
     if (image == nil) {
-        self.imageView.image = nil;
-        self.imageView.frame = self.bounds;
-        return;
+        @try {
+            self.imageView.image = nil;
+            self.imageView.frame = self.bounds;
+            return;
+        }
+        @catch (NSException *exception) {
+            return;
+        }
+        @finally {
+
+        }
     }
     [self initImageViewSize:image];
     [self configureTransforms];
