@@ -142,16 +142,28 @@
 - (void)setStartZoomRate:(CGFloat)startZoomRate
 {
     _startZoomRate = startZoomRate;
+    [self initImageViewSize:self.image];
+    [self configureTransforms];
+    [self motion];
 }
 
 - (void)setEndZoomRate:(CGFloat)endZoomRate
 {
     _endZoomRate = endZoomRate;
+    [self initImageViewSize:self.image];
+    [self configureTransforms];
+    [self motion];
 }
 
 - (void)setPadding:(UIEdgeInsets)padding
 {
     _padding = padding;
+}
+
+- (void)setAnimationDuration:(CGFloat)animationDuration
+{
+    _animationDuration = animationDuration;
+    [self restartMotion];
 }
 
 - (void)initImageViewSize:(UIImage *)image
