@@ -199,10 +199,11 @@
 }
 - (void)motion
 {
-    [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
+    [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat | UIViewAnimationOptionCurveEaseIn animations:^{
         self.imageView.transform = self.startTransform;
         self.imageView.transform = self.endTransform;
     } completion:^(BOOL finished) {
+        
     }];
 }
 
