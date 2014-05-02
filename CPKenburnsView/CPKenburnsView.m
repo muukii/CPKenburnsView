@@ -23,11 +23,9 @@
     //THE SOFTWARE.
 
 #import "CPKenBurnsView.h"
-@interface CPKenBurnsImageView : UIImageView
 
-@end
 
-@implementation CPKenBurnsImageView
+@implementation CPKenburnsImageView
 
 - (void)setImage:(UIImage *)image
 {
@@ -37,7 +35,6 @@
 @end
 
 @interface CPKenburnsView ()
-@property (nonatomic, strong) CPKenBurnsImageView * imageView;
 @property (nonatomic) CGAffineTransform startTransform;
 @property (nonatomic) CGAffineTransform endTransform;
 @end
@@ -59,7 +56,7 @@
 - (void)configureView
 {
     [self.imageView removeFromSuperview];
-    self.imageView = [[CPKenBurnsImageView alloc] initWithFrame:self.bounds];
+    self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
     self.startTransform = CGAffineTransformIdentity;
     self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
