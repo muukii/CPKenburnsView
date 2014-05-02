@@ -125,20 +125,11 @@
 
 - (void)setImage:(UIImage *)image
 {
-    _image = image;
     if (image == nil) {
-        @try {
-            self.imageView.image = nil;
-            self.imageView.frame = self.bounds;
-            return;
-        }
-        @catch (NSException *exception) {
-            return;
-        }
-        @finally {
-
-        }
+        self.imageView.image = nil;
+        return;
     }
+    _image = image;
     [self initImageViewSize:image];
     [self configureTransforms];
     [self motion];
