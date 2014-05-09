@@ -31,6 +31,11 @@
     kenbunrsView = [[CPKenburnsView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
     kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
     [self.view addSubview:kenbunrsView];
+    
+    //long press to show whole image
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showWholeImage:)];
+    longPress.minimumPressDuration = 0.3f;
+    [kenbunrsView addGestureRecognizer:longPress];
     // Do any additional setup after loading the view.
 }
 
@@ -43,6 +48,21 @@
     CGRect rect = kenbunrsView.frame;
     rect.size.height = 200 + [(UISlider *)sender value] *320;
     kenbunrsView.frame = rect;
+}
+
+- (void)showWholeImage:(UILongPressGestureRecognizer *)gesture
+{
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan:
+            [kenbunrsView showWholeImage];
+            break;
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+            [kenbunrsView zoomAndRestartAnimation];
+            break;
+        default:
+            break;
+    }
 }
 
 /*
