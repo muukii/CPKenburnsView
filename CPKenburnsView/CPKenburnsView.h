@@ -52,4 +52,8 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 @property (nonatomic, assign) CPKenburnsImageViewZoomCourse course; // default is 0
 
 - (void)restartMotion;
+- (void)showWholeImage;
+- (void)zoomAndRestartAnimation;
+- (void)stopImageViewAnimation:(BOOL)stop;
+
 @end
