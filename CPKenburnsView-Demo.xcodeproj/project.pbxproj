@@ -24,7 +24,6 @@
 		4B4889C218ED488D008F0635 /* CPKenburnsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4889C118ED488D008F0635 /* CPKenburnsView.m */; };
 		4B4889C618ED4976008F0635 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B4889C418ED4976008F0635 /* 1.jpg */; };
 		4B4889C718ED4976008F0635 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B4889C518ED4976008F0635 /* 2.png */; };
-		4B9FAF3318EE9E6800007302 /* CPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9FAF3218EE9E6800007302 /* CPTableViewController.m */; };
 		4B9FAF3618EEA2EA00007302 /* CPGrowingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B9FAF3518EEA2EA00007302 /* CPGrowingViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -62,8 +61,6 @@
 		4B4889C118ED488D008F0635 /* CPKenburnsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPKenburnsView.m; sourceTree = "<group>"; };
 		4B4889C418ED4976008F0635 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		4B4889C518ED4976008F0635 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
-		4B9FAF3118EE9E6800007302 /* CPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTableViewController.h; sourceTree = "<group>"; };
-		4B9FAF3218EE9E6800007302 /* CPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPTableViewController.m; sourceTree = "<group>"; };
 		4B9FAF3418EEA2E900007302 /* CPGrowingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPGrowingViewController.h; sourceTree = "<group>"; };
 		4B9FAF3518EEA2EA00007302 /* CPGrowingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPGrowingViewController.m; sourceTree = "<group>"; };
 		AE6FCFBAC51E498E808B97B5 /* libPods-CPKenburnsView-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CPKenburnsView-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,8 +133,6 @@
 				4B4889A018ED485E008F0635 /* CPViewController.m */,
 				4B9FAF3418EEA2E900007302 /* CPGrowingViewController.h */,
 				4B9FAF3518EEA2EA00007302 /* CPGrowingViewController.m */,
-				4B9FAF3118EE9E6800007302 /* CPTableViewController.h */,
-				4B9FAF3218EE9E6800007302 /* CPTableViewController.m */,
 				4B4889A218ED485E008F0635 /* Images.xcassets */,
 				4B48899118ED485E008F0635 /* Supporting Files */,
 			);
@@ -291,7 +286,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B9FAF3318EE9E6800007302 /* CPTableViewController.m in Sources */,
 				4B48899718ED485E008F0635 /* main.m in Sources */,
 				4B4889C218ED488D008F0635 /* CPKenburnsView.m in Sources */,
 				4B9FAF3618EEA2EA00007302 /* CPGrowingViewController.m in Sources */,
@@ -378,7 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -410,7 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
