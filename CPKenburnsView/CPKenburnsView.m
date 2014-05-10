@@ -61,7 +61,7 @@
     self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
     self.reducedImageView = [[UIImageView alloc] init];
     self.reducedImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.reducedImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    //self.reducedImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.startTransform = CGAffineTransformIdentity;
     self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
@@ -288,11 +288,11 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     CGFloat reductionRatio;
     if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height)
     {
-         reductionRatio = self.bounds.size.width / imageLayer.bounds.size.width;
+         reductionRatio = self.bounds.size.width / self.reducedImageView.frame.size.width;
     }
     else
     {
-        reductionRatio = self.bounds.size.height / imageLayer.bounds.size.width;
+        reductionRatio = self.bounds.size.height / self.reducedImageView.frame.size.height;
     }
     //imageView reduction with animation
     [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
