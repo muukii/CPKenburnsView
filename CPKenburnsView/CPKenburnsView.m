@@ -61,7 +61,6 @@
     self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
     self.reducedImageView = [[UIImageView alloc] init];
     self.reducedImageView.contentMode = UIViewContentModeScaleAspectFill;
-    //self.reducedImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.startTransform = CGAffineTransformIdentity;
     self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
@@ -182,16 +181,16 @@
     CGSize resizedImageSize;
     CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
-        //写真のサイズに合わせる
+        //adjust to image size
     if (imageSize.width > imageSize.height) {
-        //横長
+        //width > height
         power = selfLongSize / imageSize.height;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     } else if (imageSize.width == imageSize.height) {
-        //正方形
+        //width == height
         resizedImageSize = CGSizeMake(width, height);
     } else {
-        //縦長
+        //height > width
         power = selfLongSize / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
