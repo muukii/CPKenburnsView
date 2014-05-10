@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A11698D191E02350031A9B1 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2A11698C191E02350031A9B1 /* 3.jpg */; };
 		4B48898B18ED485E008F0635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B48898A18ED485E008F0635 /* Foundation.framework */; };
 		4B48898D18ED485E008F0635 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B48898C18ED485E008F0635 /* CoreGraphics.framework */; };
 		4B48898F18ED485E008F0635 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B48898E18ED485E008F0635 /* UIKit.framework */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A11698C191E02350031A9B1 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		4B48898718ED485E008F0635 /* CPKenburnsView-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CPKenburnsView-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B48898A18ED485E008F0635 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4B48898C18ED485E008F0635 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -182,6 +184,7 @@
 			children = (
 				4B4889C418ED4976008F0635 /* 1.jpg */,
 				4B4889C518ED4976008F0635 /* 2.png */,
+				2A11698C191E02350031A9B1 /* 3.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A11698D191E02350031A9B1 /* 3.jpg in Resources */,
 				4B4889C618ED4976008F0635 /* 1.jpg in Resources */,
 				4B4889A318ED485E008F0635 /* Images.xcassets in Resources */,
 				4B48899518ED485E008F0635 /* InfoPlist.strings in Resources */,
