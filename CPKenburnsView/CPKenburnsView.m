@@ -285,12 +285,9 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     self.imageView.hidden = YES;
     //calc reductionRation
     CGFloat reductionRatio;
-    if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height)
-    {
+    if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height) {
          reductionRatio = self.bounds.size.width / self.reducedImageView.frame.size.width;
-    }
-    else
-    {
+    }else {
         reductionRatio = self.bounds.size.height / self.reducedImageView.frame.size.height;
     }
     //imageView reduction with animation
