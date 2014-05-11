@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     kenbunrsView = [[CPKenburnsView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
-    kenbunrsView.image = [UIImage imageNamed:@"3.jpg"];
+    kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
     [self.view addSubview:kenbunrsView];
     
     //long press to show whole image
@@ -46,8 +46,24 @@
 }
 - (IBAction)sliderValueChanged:(id)sender {
     CGRect rect = kenbunrsView.frame;
-    rect.size.height = 200 + [(UISlider *)sender value] *320;
+    rect.size.height = 200 + [(UISlider *)sender value] *300;
     kenbunrsView.frame = rect;
+}
+- (IBAction)choiceImage:(UISegmentedControl *)sender
+{
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
+            break;
+        case 1:
+            kenbunrsView.image = [UIImage imageNamed:@"2.png"];
+            break;
+        case 2:
+            kenbunrsView.image = [UIImage imageNamed:@"3.jpg"];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)showWholeImage:(UILongPressGestureRecognizer *)gesture
