@@ -183,21 +183,15 @@
     }
 
     CGSize imageSize = image.size;
-    CGFloat width = CGRectGetWidth(self.bounds);
-    CGFloat height = CGRectGetHeight(self.bounds);
-
     CGFloat power;
     CGSize resizedImageSize;
     CGFloat selfLongSide = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
         //adjust to image size
-    if (imageSize.width > imageSize.height) {
+    if (imageSize.width >= imageSize.height) {
         //width > height
         power = selfLongSide / imageSize.height;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
-    } else if (imageSize.width == imageSize.height) {
-        //width == height
-        resizedImageSize = CGSizeMake(width, height);
     } else {
         //height > width
         power = selfLongSide / imageSize.width;
@@ -294,7 +288,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     self.imageView.hidden = YES;
     //calc reductionRation
     CGFloat reductionRatio;
-    if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height) {
+    if (self.image.size.width >= self.image.size.height) {
          reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
         if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
             reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
