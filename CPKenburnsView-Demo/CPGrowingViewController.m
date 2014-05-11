@@ -34,7 +34,7 @@
     
     //long press to show whole image
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showWholeImage:)];
-    longPress.minimumPressDuration = 0.3f;
+    longPress.minimumPressDuration = .3f;
     [kenbunrsView addGestureRecognizer:longPress];
     // Do any additional setup after loading the view.
 }

@@ -304,7 +304,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
         }
     }
     //imageView reduction with animation
-    [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
         self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
         self.reduceImageView.center = self.center;
     }completion:^(BOOL finished){
