@@ -73,6 +73,10 @@
 - (void)configureReduceImageView
 {
     if (self.reduceImageView) {
+        self.imageView.hidden = NO;
+        [self.reduceImageView setImage:nil];
+        [self.reduceImageView removeFromSuperview];
+        [self stopImageViewAnimation:NO];
         self.reduceImageView = nil;
     }
     self.reduceImageView = [[UIImageView alloc] init];
@@ -324,6 +328,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     }completion:^(BOOL finished) {
         if (finished){
             self.imageView.hidden = NO;
+            [self.reduceImageView setImage:nil];
             [self.reduceImageView removeFromSuperview];
             [self stopImageViewAnimation:NO];}
     }];

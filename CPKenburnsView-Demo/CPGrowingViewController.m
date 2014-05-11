@@ -46,7 +46,7 @@
 }
 - (IBAction)sliderValueChanged:(id)sender {
     CGRect rect = kenbunrsView.frame;
-    rect.size.height = 200 + [(UISlider *)sender value] *300;
+    rect.size.height = 200 + [(UISlider *)sender value] *280;
     kenbunrsView.frame = rect;
 }
 - (IBAction)choiceImage:(UISegmentedControl *)sender
