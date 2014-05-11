@@ -64,7 +64,7 @@
     self.startTransform = CGAffineTransformIdentity;
     self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor blackColor];
@@ -279,30 +279,37 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     //reduced image view
     CALayer *imageLayer = [self.imageView.layer presentationLayer];
     currentImageViewRect = imageLayer.frame;
-    self.reducedImageView.layer.frame = currentImageViewRect;
+    self.reducedImageView.frame = currentImageViewRect;
     self.reducedImageView.image = self.image;
     [self addSubview:self.reducedImageView];
     self.imageView.hidden = YES;
     //calc reductionRation
     CGFloat reductionRatio;
     if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height) {
-         reductionRatio = self.bounds.size.width / self.reducedImageView.frame.size.width;
+         reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
+        if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
+            reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
+        }
     }else {
-        reductionRatio = self.bounds.size.height / self.reducedImageView.frame.size.height;
+        reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
+        if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.width >= self.bounds.size.width) {
+            reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
+        }
     }
     //imageView reduction with animation
     [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.reducedImageView.transform = CGAffineTransformMakeScale(reductionRatio, reductionRatio);
+        self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
         self.reducedImageView.center = self.center;
     }completion:^(BOOL finished){
         if (finished){
             [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.reducedImageView.transform = CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f);
+                self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
             }completion:^(BOOL finished) {
                 if (finished){
                     [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        self.reducedImageView.transform = CGAffineTransformMakeScale(reductionRatio, reductionRatio);
-                    } completion:nil];}
+                        self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+                    } completion:nil
+                     ];}
             }];
         }}];
 }
@@ -310,7 +317,6 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 - (void)zoomAndRestartAnimation
 {
     [UIView animateWithDuration:.2f delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.reducedImageView.transform = CGAffineTransformIdentity;
         self.reducedImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
         if (finished){
