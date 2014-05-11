@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     kenbunrsView = [[CPKenburnsView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
-    kenbunrsView.image = [UIImage imageNamed:@"1.jpg"];
+    kenbunrsView.image = [UIImage imageNamed:@"3.jpg"];
     [self.view addSubview:kenbunrsView];
     
     //long press to show whole image
