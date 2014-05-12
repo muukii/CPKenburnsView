@@ -37,7 +37,7 @@
 @interface CPKenburnsView ()
 @property (nonatomic) CGAffineTransform startTransform;
 @property (nonatomic) CGAffineTransform endTransform;
-@property (nonatomic, strong) UIImageView *reducedImageView;
+@property (nonatomic, strong) UIImageView *reduceImageView;
 @end
 @implementation CPKenburnsView
 {
@@ -50,6 +50,7 @@
     if (self) {
         [self initParams];
         [self configureView];
+        [self configureReduceImageView];
         [self configureAnimation];
     }
     return self;
@@ -59,16 +60,27 @@
 {
     [self.imageView removeFromSuperview];
     self.imageView = [[CPKenburnsImageView alloc] initWithFrame:self.bounds];
-    self.reducedImageView = [[UIImageView alloc] init];
-    self.reducedImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.startTransform = CGAffineTransformIdentity;
     self.endTransform = CGAffineTransformIdentity;
     self.autoresizesSubviews = YES;
-    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    self.imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor blackColor];
     [self addSubview:self.imageView];
+}
+
+- (void)configureReduceImageView
+{
+    if (self.reduceImageView) {
+        self.imageView.hidden = NO;
+        [self.reduceImageView setImage:nil];
+        [self.reduceImageView removeFromSuperview];
+        [self stopImageViewAnimation:NO];
+        self.reduceImageView = nil;
+    }
+    self.reduceImageView = [[UIImageView alloc] init];
+    self.reduceImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 - (void)initParams
@@ -136,6 +148,7 @@
     }
     _image = image;
     [self initImageViewSize:image];
+    [self configureReduceImageView];
     [self configureTransforms];
     [self motion];
 }
@@ -174,24 +187,18 @@
     }
 
     CGSize imageSize = image.size;
-    CGFloat width = CGRectGetWidth(self.bounds);
-    CGFloat height = CGRectGetHeight(self.bounds);
-
     CGFloat power;
     CGSize resizedImageSize;
-    CGFloat selfLongSize = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
+    CGFloat selfLongSide = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
 
         //adjust to image size
-    if (imageSize.width > imageSize.height) {
+    if (imageSize.width >= imageSize.height) {
         //width > height
-        power = selfLongSize / imageSize.height;
+        power = selfLongSide / imageSize.height;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
-    } else if (imageSize.width == imageSize.height) {
-        //width == height
-        resizedImageSize = CGSizeMake(width, height);
     } else {
         //height > width
-        power = selfLongSize / imageSize.width;
+        power = selfLongSide / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
 
@@ -279,13 +286,13 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     //reduced image view
     CALayer *imageLayer = [self.imageView.layer presentationLayer];
     currentImageViewRect = imageLayer.frame;
-    self.reducedImageView.frame = currentImageViewRect;
-    self.reducedImageView.image = self.image;
-    [self addSubview:self.reducedImageView];
+    self.reduceImageView.frame = currentImageViewRect;
+    self.reduceImageView.image = self.image;
+    [self addSubview:self.reduceImageView];
     self.imageView.hidden = YES;
     //calc reductionRation
     CGFloat reductionRatio;
-    if (self.imageView.bounds.size.width >= self.imageView.bounds.size.height) {
+    if (self.image.size.width >= self.image.size.height) {
          reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
         if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
             reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
@@ -297,17 +304,17 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
         }
     }
     //imageView reduction with animation
-    [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
-        self.reducedImageView.center = self.center;
+    [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+        self.reduceImageView.center = self.center;
     }completion:^(BOOL finished){
         if (finished){
             [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
+                self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
             }completion:^(BOOL finished) {
                 if (finished){
                     [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        self.reducedImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+                        self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
                     } completion:nil
                      ];}
             }];
@@ -317,11 +324,12 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 - (void)zoomAndRestartAnimation
 {
     [UIView animateWithDuration:.2f delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.reducedImageView.frame = currentImageViewRect;
+        self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
         if (finished){
             self.imageView.hidden = NO;
-            [self.reducedImageView removeFromSuperview];
+            [self.reduceImageView setImage:nil];
+            [self.reduceImageView removeFromSuperview];
             [self stopImageViewAnimation:NO];}
     }];
 }
