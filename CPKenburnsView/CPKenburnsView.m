@@ -218,7 +218,7 @@
 }
 - (void)motion
 {
-    [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat animations:^{
+    [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat |UIViewAnimationOptionCurveEaseOut animations:^{
         self.imageView.transform = self.startTransform;
         self.imageView.transform = self.endTransform;
     } completion:^(BOOL finished) {
@@ -323,7 +323,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 
 - (void)zoomAndRestartAnimation
 {
-    [UIView animateWithDuration:.2f delay:0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [UIView animateWithDuration:.2f delay:.19f options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
         if (finished){
