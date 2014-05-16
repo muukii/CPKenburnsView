@@ -323,6 +323,11 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 
 - (void)zoomAndRestartAnimation
 {
+    [self zoomAndRestartAnimationWithCompletion:nil];
+}
+
+- (void)zoomAndRestartAnimationWithCompletion:(void (^)(BOOL finished))completion
+{
     [UIView animateWithDuration:.2f delay:.19f options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
@@ -330,9 +335,14 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             self.imageView.hidden = NO;
             [self.reduceImageView setImage:nil];
             [self.reduceImageView removeFromSuperview];
-            [self stopImageViewAnimation:NO];}
+            [self stopImageViewAnimation:NO];
+        }
+        if (completion) {
+            completion(finished);
+        }
     }];
 }
+
 - (void)stopImageViewAnimation:(BOOL)stop
 {
     if (stop)
