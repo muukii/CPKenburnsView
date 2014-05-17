@@ -233,6 +233,7 @@
     imageViewRect.size.height *= expandRatio;
     self.imageView.frame = imageViewRect;
     self.imageView.image = image;
+    self.state = CPKenburnsImageViewStateAnimating;
     initImageViewFrame = self.imageView.frame;
 }
 
