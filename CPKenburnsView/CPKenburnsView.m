@@ -191,6 +191,9 @@
 
 - (void)setState:(CPKenburnsImageViewState)state
 {
+    if (_state == state) {
+        return;
+    }
     _state = state;
     switch (state) {
         case CPKenburnsImageViewStateAnimating:
