@@ -60,4 +60,6 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 @property (nonatomic, assign) CPKenburnsImageViewState state;
 - (void)restartMotion;
 - (void)showWholeImage;
+- (void)zoomAndRestartAnimation;
+- (void)zoomAndRestartAnimationWithCompletion:(void(^)(BOOL finished))completion;
 @end
