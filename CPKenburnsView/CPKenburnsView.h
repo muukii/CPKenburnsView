@@ -23,6 +23,12 @@
     //THE SOFTWARE.
 
 #import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSInteger, CPKenburnsImageViewState) {
+    CPKenburnsImageViewStateAnimating,
+    CPKenburnsImageViewStatePausing
+};
+
 typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomCourse) {
     CPKenburnsImageViewZoomCourseRandom                = 0,
     CPKenburnsImageViewZoomCourseUpperLeftToLowerRight = 1,
@@ -51,10 +57,7 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 @property (nonatomic, assign) UIEdgeInsets padding; // default UIEdgeInsetsMake(10, 10, 10, 10);
 @property (nonatomic, assign) CPKenburnsImageViewZoomCourse course; // default is 0
 
+@property (nonatomic, assign) CPKenburnsImageViewState state;
 - (void)restartMotion;
 - (void)showWholeImage;
-- (void)zoomAndRestartAnimation;
-- (void)zoomAndRestartAnimationWithCompletion:(void(^)(BOOL finished))completion;
-- (void)stopImageViewAnimation:(BOOL)stop;
-
 @end

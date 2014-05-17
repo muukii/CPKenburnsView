@@ -29,8 +29,15 @@
 
 - (void)setImage:(UIImage *)image
 {
-    [super setImage:image];
-    [self.layer addAnimation:[CATransition animation] forKey:kCATransition];
+
+//    [self.layer addAnimation:[CATransition animation] forKey:kCATransition];
+    [UIView transitionWithView:self duration:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+    } completion:^(BOOL finished) {
+
+    }];
+    [UIView animateWithDuration:0.3f animations:^{
+        [super setImage:image];
+    }];
 }
 @end
 
@@ -180,6 +187,19 @@
     [self restartMotion];
 }
 
+- (void)setState:(CPKenburnsImageViewState)state
+{
+    _state = state;
+    switch (state) {
+        case CPKenburnsImageViewStateAnimating:
+            [self stopImageViewAnimation:NO];
+            break;
+        case CPKenburnsImageViewStatePausing:
+            [self stopImageViewAnimation:YES];
+            break;
+    }
+}
+
 - (void)initImageViewSize:(UIImage *)image
 {
     if (!image) {
@@ -216,6 +236,7 @@
     [self configureTransforms];
     [self motion];
 }
+
 - (void)motion
 {
     [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat |UIViewAnimationOptionCurveEaseOut animations:^{
@@ -320,6 +341,8 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             }];
         }}];
 }
+
+
 
 - (void)zoomAndRestartAnimation
 {
