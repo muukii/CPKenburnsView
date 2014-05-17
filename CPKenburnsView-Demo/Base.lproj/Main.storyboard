@@ -42,12 +42,13 @@
                                 </connections>
                             </slider>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="5g9-4g-zHC">
-                                <rect key="frame" x="63" y="493" width="194" height="29"/>
+                                <rect key="frame" x="20" y="493" width="280" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="1"/>
                                     <segment title="2"/>
                                     <segment title="3"/>
+                                    <segment title="nil"/>
                                 </segments>
                                 <connections>
                                     <action selector="choiceImage:" destination="GoO-DD-1k2" eventType="valueChanged" id="sck-gK-UZE"/>

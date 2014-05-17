@@ -29,16 +29,16 @@
 
 - (void)setImage:(UIImage *)image
 {
-
-//    [self.layer addAnimation:[CATransition animation] forKey:kCATransition];
-    [UIView transitionWithView:self duration:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-    } completion:^(BOOL finished) {
-
-    }];
-    [UIView animateWithDuration:0.3f animations:^{
-        [super setImage:image];
-    }];
+    if (self.image == nil) {
+        [UIView animateWithDuration:.7f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.alpha = 0;
+            self.alpha = 1.f;
+        } completion:^(BOOL finished) {
+        }];
+    };
+    [super setImage:image];
 }
+
 @end
 
 @interface CPKenburnsView ()
@@ -51,6 +51,7 @@
     CGRect initImageViewFrame;
     CGRect currentImageViewRect;
     CGRect initialKenburnsViewRect;
+    BOOL isReduced;
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -337,14 +338,14 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
         self.reduceImageView.center = self.center;
     }completion:^(BOOL finished){
         if (finished){
+            isReduced = YES;
             [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
             }completion:^(BOOL finished) {
                 if (finished){
                     [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                         self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
-                    } completion:nil
-                     ];}
+                    } completion:nil];}
             }];
         }}];
 }
@@ -358,7 +359,14 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 
 - (void)zoomAndRestartAnimationWithCompletion:(void (^)(BOOL finished))completion
 {
-    [UIView animateWithDuration:.2f delay:.19f options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
+    CGFloat delayTime;
+    if (isReduced) {
+        delayTime = .19f;
+    }else {
+        delayTime = 0;
+    }
+    
+    [UIView animateWithDuration:.2f delay:delayTime options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
         if (finished){
@@ -371,6 +379,8 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             completion(finished);
         }
     }];
+    
+    isReduced = NO;
 }
 
 - (void)stopImageViewAnimation:(BOOL)stop
