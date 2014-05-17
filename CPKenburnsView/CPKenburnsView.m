@@ -236,7 +236,6 @@
     if (expandRatio <= 1.f) {
         expandRatio = 1.f;
     }
-    NSLog(@"%f",expandRatio);
     imageViewRect.size.height *= expandRatio;
     self.imageView.frame = imageViewRect;
     self.imageView.image = image;
