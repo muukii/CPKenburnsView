@@ -50,6 +50,7 @@
 {
     CGRect initImageViewFrame;
     CGRect currentImageViewRect;
+    CGRect initialKenburnsViewRect;
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -74,6 +75,7 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor blackColor];
+    initialKenburnsViewRect = self.bounds;
     [self addSubview:self.imageView];
 }
 
@@ -209,8 +211,7 @@
     CGSize imageSize = image.size;
     CGFloat power;
     CGSize resizedImageSize;
-    CGFloat selfLongSide = MAX(CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds));
-
+    CGFloat selfLongSide = MAX(CGRectGetHeight(initialKenburnsViewRect), CGRectGetWidth(initialKenburnsViewRect));
         //adjust to image size
     if (imageSize.width >= imageSize.height) {
         //width > height
@@ -225,6 +226,8 @@
     self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
     imageViewRect.size = resizedImageSize;
+    CGFloat expandRatio = self.bounds.size.height / initialKenburnsViewRect.size.height;
+    imageViewRect.size.height *= expandRatio;
     self.imageView.frame = imageViewRect;
     self.imageView.image = image;
     initImageViewFrame = self.imageView.frame;
