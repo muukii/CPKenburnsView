@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 
 @interface CPKenburnsView : UIView
 @property (nonatomic, strong) CPKenburnsImageView * imageView;
-@property (nonatomic, copy) UIImage * image;
+@property (nonatomic, strong) UIImage * image;
 @property (nonatomic, assign) CGFloat animationDuration;  //default is 13.f
 @property (nonatomic, assign) CGFloat zoomRatio; // default 0.1  0 ~ 1 not working
 @property (nonatomic, assign) CGFloat endZoomRate; // default 1.2
@@ -58,6 +58,7 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 @property (nonatomic, assign) CPKenburnsImageViewZoomCourse course; // default is 0
 
 @property (nonatomic, assign) CPKenburnsImageViewState state;
+
 - (void)restartMotion;
 - (void)showWholeImage;
 - (void)zoomAndRestartAnimation;
