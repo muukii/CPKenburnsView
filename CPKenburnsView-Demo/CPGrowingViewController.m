@@ -61,6 +61,9 @@
         case 2:
             kenbunrsView.image = [UIImage imageNamed:@"3.jpg"];
             break;
+        case 3:
+            kenbunrsView.image = nil;
+            break;
         default:
             break;
     }

@@ -29,16 +29,16 @@
 
 - (void)setImage:(UIImage *)image
 {
-
-//    [self.layer addAnimation:[CATransition animation] forKey:kCATransition];
-    [UIView transitionWithView:self duration:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-    } completion:^(BOOL finished) {
-
-    }];
-    [UIView animateWithDuration:0.3f animations:^{
-        [super setImage:image];
-    }];
+    if (self.image == nil) {
+        [UIView animateWithDuration:.7f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.alpha = 0;
+            self.alpha = 1.f;
+        } completion:^(BOOL finished) {
+        }];
+    };
+    [super setImage:image];
 }
+
 @end
 
 @interface CPKenburnsView ()
@@ -48,9 +48,11 @@
 @end
 @implementation CPKenburnsView
 {
+    CGRect initialKenburnsViewRect;
     CGRect initImageViewFrame;
     CGRect currentImageViewRect;
-    CGRect initialKenburnsViewRect;
+    CGRect keepAspectImageViewRect;
+    BOOL isReduced;
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -225,11 +227,15 @@
         power = selfLongSide / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
-
+    
     self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
     imageViewRect.size = resizedImageSize;
+    keepAspectImageViewRect = imageViewRect;
     CGFloat expandRatio = self.bounds.size.height / initialKenburnsViewRect.size.height;
+    if (expandRatio <= 1.f) {
+        expandRatio = 1.f;
+    }
     imageViewRect.size.height *= expandRatio;
     self.imageView.frame = imageViewRect;
     self.imageView.image = image;
@@ -321,30 +327,30 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     //calc reductionRation
     CGFloat reductionRatio;
     if (self.image.size.width >= self.image.size.height) {
-         reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
-        if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
-            reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
+         reductionRatio = self.bounds.size.width / keepAspectImageViewRect.size.width;
+        if (CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
+            reductionRatio = self.bounds.size.height / keepAspectImageViewRect.size.height;
         }
     }else {
-        reductionRatio = self.bounds.size.height / initImageViewFrame.size.height;
-        if (CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.width >= self.bounds.size.width) {
-            reductionRatio = self.bounds.size.width / initImageViewFrame.size.width;
+        reductionRatio = self.bounds.size.height / keepAspectImageViewRect.size.height;
+        if (CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.width >= self.bounds.size.width) {
+            reductionRatio = self.bounds.size.width / keepAspectImageViewRect.size.width;
         }
     }
     //imageView reduction with animation
     [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+        self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
         self.reduceImageView.center = self.center;
     }completion:^(BOOL finished){
         if (finished){
+            isReduced = YES;
             [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
+                self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
             }completion:^(BOOL finished) {
                 if (finished){
                     [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        self.reduceImageView.bounds = CGRectApplyAffineTransform(initImageViewFrame, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
-                    } completion:nil
-                     ];}
+                        self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+                    } completion:nil];}
             }];
         }}];
 }
@@ -358,7 +364,14 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 
 - (void)zoomAndRestartAnimationWithCompletion:(void (^)(BOOL finished))completion
 {
-    [UIView animateWithDuration:.2f delay:.19f options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
+    CGFloat delayTime;
+    if (isReduced) {
+        delayTime = .19f;
+    }else {
+        delayTime = 0;
+    }
+    
+    [UIView animateWithDuration:.2f delay:delayTime options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
         if (finished){
@@ -371,6 +384,8 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             completion(finished);
         }
     }];
+    
+    isReduced = NO;
 }
 
 - (void)stopImageViewAnimation:(BOOL)stop
