@@ -157,11 +157,15 @@
         self.imageView.image = nil;
         return;
     }
-    _image = image;
     [self initImageViewSize:image];
     [self configureReduceImageView];
     [self configureTransforms];
     [self motion];
+}
+
+- (UIImage *)image
+{
+    return self.imageView.image;
 }
 
 - (void)setStartZoomRate:(CGFloat)startZoomRate
@@ -366,7 +370,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 {
     CGFloat delayTime;
     if (isReduced) {
-        delayTime = .19f;
+        delayTime = .2f;
     }else {
         delayTime = 0;
     }
