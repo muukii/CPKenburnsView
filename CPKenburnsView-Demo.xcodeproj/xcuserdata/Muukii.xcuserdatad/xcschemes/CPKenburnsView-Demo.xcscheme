@@ -17,7 +17,7 @@
                BlueprintIdentifier = "4B48898618ED485E008F0635"
                BuildableName = "CPKenburnsView-Demo.app"
                BlueprintName = "CPKenburnsView-Demo"
-               ReferencedContainer = "container:CPKenBurnsView-Demo.xcodeproj">
+               ReferencedContainer = "container:CPKenburnsView-Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "4B4889A718ED485E008F0635"
                BuildableName = "CPKenburnsView-DemoTests.xctest"
                BlueprintName = "CPKenburnsView-DemoTests"
-               ReferencedContainer = "container:CPKenBurnsView-Demo.xcodeproj">
+               ReferencedContainer = "container:CPKenburnsView-Demo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,7 +45,7 @@
             BlueprintIdentifier = "4B48898618ED485E008F0635"
             BuildableName = "CPKenburnsView-Demo.app"
             BlueprintName = "CPKenburnsView-Demo"
-            ReferencedContainer = "container:CPKenBurnsView-Demo.xcodeproj">
+            ReferencedContainer = "container:CPKenburnsView-Demo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "4B48898618ED485E008F0635"
             BuildableName = "CPKenburnsView-Demo.app"
             BlueprintName = "CPKenburnsView-Demo"
-            ReferencedContainer = "container:CPKenBurnsView-Demo.xcodeproj">
+            ReferencedContainer = "container:CPKenburnsView-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "4B48898618ED485E008F0635"
             BuildableName = "CPKenburnsView-Demo.app"
             BlueprintName = "CPKenburnsView-Demo"
-            ReferencedContainer = "container:CPKenBurnsView-Demo.xcodeproj">
+            ReferencedContainer = "container:CPKenburnsView-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

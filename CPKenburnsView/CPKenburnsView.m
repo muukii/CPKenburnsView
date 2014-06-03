@@ -1,26 +1,26 @@
-    //
-    //CPKenburnsImageView.m
-    //
-    //The MIT License (MIT)
-    //Copyright © 2014 Muukii (www.muukii.me)
-    //
-    //Permission is hereby granted, free of charge, to any person obtaining a copy
-    //of this software and associated documentation files (the “Software”), to deal
-    //in the Software without restriction, including without limitation the rights
-    //to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    //copies of the Software, and to permit persons to whom the Software is
-    //furnished to do so, subject to the following conditions:
-    //
-    //The above copyright notice and this permission notice shall be included in
-    //all copies or substantial portions of the Software.
-    //
-    //THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    //IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    //FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    //AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    //THE SOFTWARE.
+//
+//CPKenburnsImageView.m
+//
+//The MIT License (MIT)
+//Copyright © 2014 Muukii (www.muukii.me)
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the “Software”), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in
+//all copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//THE SOFTWARE.
 
 #import "CPKenBurnsView.h"
 
@@ -221,7 +221,7 @@
     CGFloat power;
     CGSize resizedImageSize;
     CGFloat selfLongSide = MAX(CGRectGetHeight(initialKenburnsViewRect), CGRectGetWidth(initialKenburnsViewRect));
-        //adjust to image size
+    //adjust to image size
     if (imageSize.width >= imageSize.height) {
         //width > height
         power = selfLongSide / imageSize.height;
@@ -231,7 +231,7 @@
         power = selfLongSide / imageSize.width;
         resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
     }
-    
+
     self.imageView.transform = CGAffineTransformIdentity;
     CGRect imageViewRect = self.imageView.bounds;
     imageViewRect.size = resizedImageSize;
@@ -247,6 +247,12 @@
     initImageViewFrame = self.imageView.frame;
 }
 
+- (void)setEnableMotion:(BOOL)enableMotion
+{
+    _enableMotion = enableMotion;
+    [self restartMotion];
+}
+
 - (void)invalidateMotion
 {
     [self.imageView.layer removeAllAnimations];
@@ -260,12 +266,17 @@
 
 - (void)motion
 {
-    [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat |UIViewAnimationOptionCurveEaseOut animations:^{
-        self.imageView.transform = self.startTransform;
-        self.imageView.transform = self.endTransform;
-    } completion:^(BOOL finished) {
-    
-    }];
+    if (self.enableMotion) {
+        [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat |UIViewAnimationOptionCurveEaseOut animations:^{
+            self.imageView.transform = self.startTransform;
+            self.imageView.transform = self.endTransform;
+        } completion:^(BOOL finished) {
+
+        }];
+    } else {
+        [self invalidateMotion];
+        self.imageView.center = self.center;
+    }
 }
 
 - (CGRect)zoomRect:(CPKenburnsImageViewZoomPoint)zoomPoint zoomRate:(CGFloat)zoomRate
@@ -335,7 +346,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     //calc reductionRation
     CGFloat reductionRatio;
     if (self.image.size.width >= self.image.size.height) {
-         reductionRatio = self.bounds.size.width / keepAspectImageViewRect.size.width;
+        reductionRatio = self.bounds.size.width / keepAspectImageViewRect.size.width;
         if (CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio)).size.height >= self.bounds.size.height) {
             reductionRatio = self.bounds.size.height / keepAspectImageViewRect.size.height;
         }
@@ -378,7 +389,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     }else {
         delayTime = 0;
     }
-    
+
     [UIView animateWithDuration:.2f delay:delayTime options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
@@ -392,7 +403,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             completion(finished);
         }
     }];
-    
+
     isReduced = NO;
 }
 
