@@ -247,6 +247,10 @@
     initImageViewFrame = self.imageView.frame;
 }
 
+- (void)invalidateMotion
+{
+    [self.imageView.layer removeAllAnimations];
+}
 - (void)restartMotion
 {
     [self initImageViewSize:self.image];
