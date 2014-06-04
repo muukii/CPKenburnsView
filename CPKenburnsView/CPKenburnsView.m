@@ -39,11 +39,6 @@
         // no animation
     } else {
         // fade out while changing self.image
-        CFTimeInterval stoppedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.layer.speed = 0;
-        self.layer.timeOffset = stoppedTime;
-        
-        // animation
         CATransition *transition    = [CATransition animation];
         transition.duration         = .7f;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -313,7 +308,7 @@
         animationGroup.autoreverses = YES;
         animationGroup.removedOnCompletion = NO;
         animationGroup.duration = self.animationDuration;
-        animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         animationGroup.animations = @[moveX, moveY, scale];
         
         [self.imageView.layer addAnimation:animationGroup forKey:@"move-scale-layer"];
