@@ -35,22 +35,7 @@
             self.alpha = 1.f;
         } completion:^(BOOL finished) {
         }];
-    } else if (image == nil) {
-        // no animation
-    } else {
-        // fade out while changing self.image
-        CFTimeInterval stoppedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.layer.speed = 0;
-        self.layer.timeOffset = stoppedTime;
-        
-        // animation
-        CATransition *transition    = [CATransition animation];
-        transition.duration         = .7f;
-        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        transition.type = kCATransitionFade;
-        
-        [self.layer addAnimation:transition forKey:nil];
-    }
+    };
     [super setImage:image];
 }
 
@@ -268,14 +253,6 @@
     [self restartMotion];
 }
 
-- (void) stopMotion: (BOOL) stop
-{
-    if (stop) {
-        [self setState:CPKenburnsImageViewStatePausing];
-    } else {
-        [self setState:CPKenburnsImageViewStateAnimating];
-    }
-}
 - (void)invalidateMotion
 {
     [self.imageView.layer removeAllAnimations];
@@ -290,36 +267,12 @@
 - (void)motion
 {
     if (self.enableMotion) {
-        // modify animation, now we can pause or goon animation
-        // also, the animation will keeps former state when app coming out of background
-        CGAffineTransform startTransform = [[self valueForKey:@"startTransform"] CGAffineTransformValue];
-        CGAffineTransform endTransform = [[self valueForKey:@"endTransform"] CGAffineTransformValue];
-        
-        CABasicAnimation *moveX = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
-        moveX.fromValue = [NSNumber numberWithFloat:startTransform.tx];
-        moveX.toValue = [NSNumber numberWithFloat:endTransform.tx];
-        
-        CABasicAnimation *moveY = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
-        moveY.fromValue = [NSNumber numberWithFloat:startTransform.ty];
-        moveY.toValue = [NSNumber numberWithFloat:endTransform.ty];
-        
-        CABasicAnimation *scale = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-        scale.fromValue = [NSNumber numberWithFloat:startTransform.a];
-        scale.toValue = [NSNumber numberWithFloat:endTransform.a];
-        
-        CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-        animationGroup.delegate = self;
-        animationGroup.repeatCount = MAXFLOAT;
-        animationGroup.autoreverses = YES;
-        animationGroup.removedOnCompletion = NO;
-        animationGroup.duration = self.animationDuration;
-        animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        animationGroup.animations = @[moveX, moveY, scale];
-        
-        [self.imageView.layer addAnimation:animationGroup forKey:@"move-scale-layer"];
-        self.imageView.layer.speed = 1.0;
-        CFTimeInterval pausedTime = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.imageView.layer.timeOffset = pausedTime;
+        [UIView animateWithDuration:self.animationDuration delay:0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat |UIViewAnimationOptionCurveEaseOut animations:^{
+            self.imageView.transform = self.startTransform;
+            self.imageView.transform = self.endTransform;
+        } completion:^(BOOL finished) {
+
+        }];
     } else {
         [self invalidateMotion];
         self.imageView.center = self.center;
@@ -458,22 +411,18 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
 {
     if (stop)
     {
-        if (self.imageView.layer.speed != 0) {
-            CFTimeInterval stoppedTime = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-            self.imageView.layer.speed = 0;
-            self.imageView.layer.timeOffset = stoppedTime;
-        }
+        CFTimeInterval stoppedTime = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.imageView.layer.speed = 0;
+        self.imageView.layer.timeOffset = stoppedTime;
     }
     else
     {
-        if (self.imageView.layer.speed != 1.0) {
-            CFTimeInterval stoppedTime = self.imageView.layer.timeOffset;
-            self.imageView.layer.speed = 1.0f;
-            self.imageView.layer.beginTime = 0;
-            self.imageView.layer.timeOffset = 0;
-            CFTimeInterval timeSinceStopped = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil] - stoppedTime;
-            self.imageView.layer.beginTime = timeSinceStopped;
-        }
+        CFTimeInterval stoppedTime = self.imageView.layer.timeOffset;
+        self.imageView.layer.speed = 1.0f;
+        self.imageView.layer.beginTime = 0;
+        self.imageView.layer.timeOffset = 0;
+        CFTimeInterval timeSinceStopped = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil] - stoppedTime;
+        self.imageView.layer.beginTime = timeSinceStopped;
     }
 }
 
