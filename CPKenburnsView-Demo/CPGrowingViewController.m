@@ -38,6 +38,7 @@
     longPress.minimumPressDuration = .3f;
     [kenbunrsView addGestureRecognizer:longPress];
     // Do any additional setup after loading the view.
+    [kenbunrsView setEnableMotion:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,7 +48,7 @@
 }
 - (IBAction)sliderValueChanged:(id)sender {
     CGRect rect = kenbunrsView.frame;
-    rect.size.height = 200 + [(UISlider *)sender value] *280;
+    rect.size.height = 240 + [(UISlider *)sender value] *160;
     kenbunrsView.frame = rect;
 }
 - (IBAction)choiceImage:(UISegmentedControl *)sender
