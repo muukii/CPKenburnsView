@@ -255,6 +255,7 @@
 
 - (void)invalidateMotion
 {
+    self.imageView.transform = CGAffineTransformIdentity;
     [self.imageView.layer removeAllAnimations];
 }
 - (void)restartMotion
@@ -424,6 +425,16 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
         CFTimeInterval timeSinceStopped = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil] - stoppedTime;
         self.imageView.layer.beginTime = timeSinceStopped;
     }
+}
+
+- (void)startAnimationWithLayer:(CALayer *)layer
+{
+    CFTimeInterval stoppedTime = layer.timeOffset;
+    self.imageView.layer.speed = 1.0f;
+    self.imageView.layer.beginTime = 0;
+    self.imageView.layer.timeOffset = 0;
+    CFTimeInterval timeSinceStopped = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - stoppedTime;
+    self.imageView.layer.beginTime = timeSinceStopped;
 }
 
 @end
