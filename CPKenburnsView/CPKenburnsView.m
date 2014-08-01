@@ -437,4 +437,12 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     self.imageView.layer.beginTime = timeSinceStopped;
 }
 
+- (CALayer *)layerWithStopAnimation
+{
+    CFTimeInterval stoppedTime = [self.imageView.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    self.imageView.layer.speed = 0;
+    self.imageView.layer.timeOffset = stoppedTime;
+    return self.imageView.layer;
+}
+
 @end

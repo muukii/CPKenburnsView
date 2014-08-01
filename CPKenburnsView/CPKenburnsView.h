@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, CPKenburnsImageViewZoomPoint) {
 - (void)invalidateMotion;
 
 - (void)stopImageViewAnimation:(BOOL)stop;
-- (void)startAnimationWithLayer:(CALayer *)layer;
+- (void)restartAllKenburnsMotion;
 
 - (void)showWholeImage;
 - (void)zoomAndRestartAnimation;
