@@ -216,35 +216,25 @@
     if (!image) {
         return;
     }
-
+    
     CGSize imageSize = image.size;
+    CGFloat aspectImage = imageSize.width / imageSize.height;
+    CGFloat aspectKenburnsView = initialKenburnsViewRect.size.width / initialKenburnsViewRect.size.height;
     CGFloat power;
-    CGSize resizedImageSize;
-    CGFloat selfLongSide = MAX(CGRectGetHeight(initialKenburnsViewRect), CGRectGetWidth(initialKenburnsViewRect));
-    //adjust to image size
-    if (imageSize.width >= imageSize.height) {
-        //width > height
-        power = selfLongSide / imageSize.height;
-        resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
-    } else {
-        //height > width
-        power = selfLongSide / imageSize.width;
-        resizedImageSize = CGSizeMake(imageSize.width * power, imageSize.height * power);
+    if (aspectImage >= aspectKenburnsView) {
+        power = initialKenburnsViewRect.size.height / imageSize.height;
+    }else {
+        power = initialKenburnsViewRect.size.width / imageSize.width;
     }
-
     self.imageView.transform = CGAffineTransformIdentity;
-    CGRect imageViewRect = self.imageView.bounds;
-    imageViewRect.size = resizedImageSize;
-    keepAspectImageViewRect = imageViewRect;
-    CGFloat expandRatio = self.bounds.size.height / initialKenburnsViewRect.size.height;
-    if (expandRatio <= 1.f) {
-        expandRatio = 1.f;
-    }
-    imageViewRect.size.height *= expandRatio;
-    self.imageView.frame = imageViewRect;
+    CGRect resizedRect = self.imageView.bounds;
+    resizedRect.size.width = imageSize.width * power;
+    resizedRect.size.height = imageSize.height * power;
+    keepAspectImageViewRect = resizedRect;
+    self.imageView.bounds = resizedRect;
     self.imageView.image = image;
-    self.state = CPKenburnsImageViewStateAnimating;
     initImageViewFrame = self.imageView.frame;
+    self.state = CPKenburnsImageViewStateAnimating;
 }
 
 - (void)setEnableMotion:(BOOL)enableMotion
