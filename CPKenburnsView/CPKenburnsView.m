@@ -66,6 +66,12 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    initialKenburnsViewRect = self.bounds;
+}
+
 - (void)configureView
 {
     [self.imageView removeFromSuperview];
@@ -347,22 +353,24 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             reductionRatio = self.bounds.size.width / keepAspectImageViewRect.size.width;
         }
     }
-    //imageView reduction with animation
-    [UIView animateWithDuration:.35f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
-        self.reduceImageView.center = self.center;
-    }completion:^(BOOL finished){
-        if (finished){
+    
+    isReduced = NO;
+    [UIView animateKeyframesWithDuration:.55f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:.35f/.55f animations:^{
+            self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+            self.reduceImageView.center = self.center;
+        }];
+        [UIView addKeyframeWithRelativeStartTime:.35f/.55f relativeDuration:.1f/.55f animations:^{
+            self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
+        }];
+        [UIView addKeyframeWithRelativeStartTime:.45f/.55f relativeDuration:.1f/.55f animations:^{
+            self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
+        }];
+    } completion:^(BOOL finished) {
+        if (finished) {
             isReduced = YES;
-            [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio + .03f, reductionRatio + .03f));
-            }completion:^(BOOL finished) {
-                if (finished){
-                    [UIView animateWithDuration:.1f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                        self.reduceImageView.bounds = CGRectApplyAffineTransform(keepAspectImageViewRect, CGAffineTransformMakeScale(reductionRatio, reductionRatio));
-                    } completion:nil];}
-            }];
-        }}];
+        }
+    }];
 }
 
 
@@ -380,11 +388,11 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
     }else {
         delayTime = 0;
     }
-
+    
     [UIView animateWithDuration:.2f delay:delayTime options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState animations:^{
         self.reduceImageView.frame = currentImageViewRect;
     }completion:^(BOOL finished) {
-        if (finished){
+        if (finished) {
             self.imageView.hidden = NO;
             [self.reduceImageView setImage:nil];
             [self.reduceImageView removeFromSuperview];
@@ -394,7 +402,7 @@ translatedAndScaledTransformUsingViewRect(CGRect viewRect,CGRect fromRect)
             completion(finished);
         }
     }];
-
+    
     isReduced = NO;
 }
 
