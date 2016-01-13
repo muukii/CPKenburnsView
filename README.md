@@ -1,5 +1,8 @@
 CPKenburnsImageView
 ===================
+
+## Swift version -> [Here](https://github.com/ra1028/KenBurnsSlideshowView)
+
 ### Ken Burns Effect
 
 inspired by Heyday 
